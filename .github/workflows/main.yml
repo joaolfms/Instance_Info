@@ -15,7 +15,7 @@ jobs:
 
       - name: Buildando a imagem
         run: |-
-          docker build -t joaolfms/instance-info:0.1 .
+          docker build -t joaolfms/instance-info:0.1 /Verify
       - name: Push para o Docker Hub
         uses: actions-hub/docker@master
         with:
