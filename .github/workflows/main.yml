@@ -15,11 +15,10 @@ jobs:
 
       - name: Buildando a imagem
         run: |-
-          echo $PWD
-          cd instance-info
+          cd instance-info/Verify_SSM_instaled/Instance-Info
           docker build -t joaolfms/instance-info:0.1 .
       - name: Push para o Docker Hub
         uses: actions-hub/docker@master
         with:
-          args: push joaolfms/instance-info:0.1
+          args: push joaolfms/instance-info:0.1ls
 
