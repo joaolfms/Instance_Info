@@ -1,0 +1,24 @@
+name: CI
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  depkoyment:
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Login no Docker Hub
+        uses: actions-hub/docker/login@master
+        env:         
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
+
+      - name: Buildando a imagem
+        run: |-
+          cat $PWD
+          cd Instance-Info
+          docker build -t {{DOCKER_USERNAME}}/instance-info:0.1
+      - name: Push para o Docker Hub
+        uses: actions-hub/docker@master
+        with:
+          args: push {{DOCKER_USERNAME}}/instance-info:0.1
