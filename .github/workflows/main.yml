@@ -15,11 +15,10 @@ jobs:
 
       - name: Buildando a imagem
         run: |-
-          cat $PWD 
           cd Instance-Info
           docker build -t {{DOCKER_USERNAME}}/instance-info:0.1
       - name: Push para o Docker Hub
         uses: actions-hub/docker@master
         with:
           args: push {{DOCKER_USERNAME}}/instance-info:0.1
-          
+
