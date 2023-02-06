@@ -7,17 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+        
       - name: Login no Docker Hub
         uses: actions-hub/docker/login@master
         env:         
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
 
-      - name: Buildando a imagem
-        run: |-
-          docker build -t joaolfms/instance-info:0.1 .
-      - name: Push para o Docker Hub
-        uses: actions-hub/docker@master
+      - name: Build and push
+        id: docker-build-push
+        uses: docker/build-push-action@v2
         with:
-          args: push joaolfms/instance-info:0.1
-
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.secrets.outputs.DOCKERHUB_USERNAME }}/instance-info:0.1
