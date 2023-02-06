@@ -24,4 +24,4 @@ jobs:
           context: ./Instance-Info
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/instance-info:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/instanceinfo:latest
