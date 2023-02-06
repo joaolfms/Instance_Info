@@ -10,7 +10,7 @@ RUN apk update && apk upgrade --available -y
 RUN apk add python3 python3-pip git -y
 
 #vai para o diretório principal
-WORKDIR /Verify_SSM_instaled/instance-info
+WORKDIR /instance-info
 
 #Instala o aplicativo
 RUN pip3 install -r requirements.txt
