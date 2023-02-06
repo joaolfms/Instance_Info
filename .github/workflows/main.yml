@@ -18,10 +18,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
 
       - name: Build and push
-        id: docker-build-push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
-          context: ./Instance-Info
-          file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/instanceinfo:latest
+          tags: $DOCKER_USERNAME/app:latest
