@@ -15,7 +15,7 @@ jobs:
 
       - name: Buildando a imagem
         run: |-
-          cd instance-info/Verify_SSM_instaled/Instance-Info
+          cd Verify_SSM_instaled/Instance-Info
           docker build -t joaolfms/instance-info:0.1 .
       - name: Push para o Docker Hub
         uses: actions-hub/docker@master
