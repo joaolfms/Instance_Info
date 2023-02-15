@@ -1,41 +1,34 @@
-import json
 import pandas as pd
-from classe import EC2InstancesStatus
-import os
+from classe import *
 
-# Função recebe como parâmetro os dados que serão convertidos
-# a .json e depois .xlsx oriundos da classe EC2InstancesStatus.
+ec2 = EC2InstancesStatus()
+ec2.exec_ec2()
 
-def file_json(data, file_name):
+rds = RDSInfo()
+rds.exec_rds()
 
-    # Escreve a antrada em formato .json usando o modulo json.
+regions = ['sa-east-1', 'us-east-1']
+dynamo_table_info = DynamoTableInfo(regions)
+results = dynamo_table_info.get_table_info()
+dynamo_table_info.save_results_to_file(results)
 
-    with open(file_name, 'w') as f:
-        json.dump(data, f, indent=4)
+#lista com os nomes dos arquivos JSON
+json_files = lista_de_arquivos
 
-    # Recebe o arquivo .json criado no step anterior e converte
-    # em uma plhanilha de extenção .xlsx usando o modulo pd da 
-    # biblioteca pandas.
+# dicionário que armazenará cada arquivo JSON convertido em DataFrame
+data_frames = {}
 
-    xlsx_file_name = file_name.split(".")[0] + ".xlsx"
-    df = pd.read_json(file_name)
-    df.to_excel(xlsx_file_name, index=False)
+# converter cada arquivo JSON em um DataFrame e armazenar no dicionário
+for file in json_files:
+    with open(file, 'r') as f:
+        data_frames[file] = pd.read_json(f)
 
-# Função criada para iniciar o mapeamento.
+# criar um objeto ExcelWriter para salvar a planilha
+writer = pd.ExcelWriter('resultados.xlsx', engine='xlsxwriter')
 
-def start():
+# salvar cada DataFrame como uma folha da planilha
+for name, data in data_frames.items():
+    data.to_excel(writer, sheet_name=name.split('.')[0], index=False)
 
-    # Recebe as informações nessessárias para que o mapeamento funcione corretamente.
-     
-    os.environ['AWS_PROFILE'] = input("Profile: ").strip()
-    os.environ['AWS_DEFAULT_REGION'] = input("Region: ")
-    name_file = input("Nome do arquivo que será sem a extenção: ")
-
-    # Cria o objeto da classe e instância o objeto.
-
-    ec2_status = EC2InstancesStatus()
-    instances_status = ec2_status.get_status()
-
-    # Inicia o mapeamento.
-
-    file_json(instances_status, file_name=name_file.split(".")[0] + ".json")
+# fechar o objeto ExcelWriter
+writer.save()
